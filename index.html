@@ -1,945 +1,1042 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C-Corp Education Hub | Interactive Learning Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-:root {
-  --primary: #0a0e27;
-  --accent: #00ff88;
-  --accent-purple: #a855f7;
-  --accent-blue: #3b82f6;
-  --accent-orange: #fb923c;
-  --text: #e2e8f0;
-  --text-dim: #94a3b8;
-  --surface: #1a1f3a;
-  --surface-light: #252b4a;
-}
-body {
-  font-family: 'Space Mono', monospace;
-  background: var(--primary);
-  color: var(--text);
-  overflow-x: hidden;
-  line-height: 1.6;
-}
-/* Animated Grid Background */
-.grid-bg {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image:
-    linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-  background-size: 50px 50px;
-  z-index: 0;
-  animation: gridMove 20s linear infinite;
-}
-@keyframes gridMove {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(50px, 50px); }
-}
-/* Floating Orbs */
-.orb {
-  position: fixed;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.15;
-  z-index: 1;
-  animation: float 20s ease-in-out infinite;
-}
-.orb1 {
-  width: 400px;
-  height: 400px;
-  background: var(--accent);
-  top: -100px;
-  left: -100px;
-  animation-delay: 0s;
-}
-.orb2 {
-  width: 300px;
-  height: 300px;
-  background: var(--accent-purple);
-  bottom: -50px;
-  right: -50px;
-  animation-delay: 7s;
-}
-.orb3 {
-  width: 350px;
-  height: 350px;
-  background: var(--accent-blue);
-  top: 40%;
-  right: 10%;
-  animation-delay: 14s;
-}
-@keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -30px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-}
-.container {
-  position: relative;
-  z-index: 2;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-/* Header */
-header {
-  text-align: center;
-  margin-bottom: 60px;
-  animation: fadeInDown 1s ease-out;
-}
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.logo {
-  font-family: 'Syne', sans-serif;
-  font-size: 4rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent-purple));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 10px;
-  letter-spacing: -2px;
-  animation: glowPulse 3s ease-in-out infinite;
-}
-@keyframes glowPulse {
-  0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.3)); }
-  50% { filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.6)); }
-}
-.tagline {
-  font-size: 1.2rem;
-  color: var(--text-dim);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 400;
-}
-.hero-description {
-  max-width: 700px;
-  margin: 30px auto;
-  font-size: 1rem;
-  color: var(--text);
-  line-height: 1.8;
-}
-/* Stats Bar */
-.stats-bar {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin: 40px 0 60px;
-  flex-wrap: wrap;
-  animation: fadeIn 1s ease-out 0.3s backwards;
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.stat {
-  text-align: center;
-}
-.stat-number {
-  font-family: 'Syne', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--accent);
-  display: block;
-}
-.stat-label {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-/* Path Selector */
-.path-selector {
-  margin: 60px 0;
-  animation: fadeIn 1s ease-out 0.6s backwards;
-}
-.path-selector h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 40px;
-  color: var(--text);
-}
-.paths {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  margin-bottom: 60px;
-}
-.path-card {
-  background: var(--surface);
-  border: 2px solid transparent;
-  border-radius: 16px;
-  padding: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-.path-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, transparent, rgba(0, 255, 136, 0.1));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.path-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--accent);
-  box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
-}
-.path-card:hover::before {
-  opacity: 1;
-}
-.path-card.active {
-  border-color: var(--accent);
-  background: var(--surface-light);
-}
-.path-icon {
-  font-size: 3rem;
-  margin-bottom: 15px;
-  display: block;
-}
-.path-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: var(--text);
-}
-.path-desc {
-  font-size: 0.9rem;
-  color: var(--text-dim);
-  margin-bottom: 15px;
-}
-.path-time {
-  display: inline-block;
-  background: rgba(0, 255, 136, 0.1);
-  color: var(--accent);
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-/* Resources Grid */
-.resources {
-  animation: fadeIn 1s ease-out 0.9s backwards;
-}
-.resources h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 2rem;
-  margin-bottom: 30px;
-  color: var(--text);
-}
-.resource-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 25px;
-  margin-bottom: 40px;
-}
-.resource-card {
-  background: var(--surface);
-  border-radius: 16px;
-  overflow: hidden;
-  border: 2px solid var(--surface-light);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  position: relative;
-}
-.resource-card:hover {
-  transform: translateY(-8px);
-  border-color: var(--accent);
-  box-shadow: 0 15px 50px rgba(0, 255, 136, 0.25);
-}
-.resource-header {
-  padding: 25px;
-  background: linear-gradient(135deg, var(--surface-light), var(--surface));
-  position: relative;
-}
-.resource-type {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(0, 255, 136, 0.2);
-  color: var(--accent);
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.resource-icon {
-  font-size: 3rem;
-  margin-bottom: 10px;
-  display: block;
-}
-.resource-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 10px;
-}
-.resource-subtitle {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-}
-.resource-body {
-  padding: 25px;
-}
-.resource-features {
-  list-style: none;
-  margin-bottom: 20px;
-}
-.resource-features li {
-  padding: 8px 0;
-  padding-left: 25px;
-  position: relative;
-  font-size: 0.9rem;
-  color: var(--text);
-}
-.resource-features li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-  font-weight: bold;
-}
-.resource-footer {
-  padding: 0 25px 25px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  flex: 1;
-  min-width: 120px;
-}
-.btn-primary {
-  background: var(--accent);
-  color: var(--primary);
-}
-.btn-primary:hover {
-  background: #00cc6e;
-  transform: scale(1.05);
-  box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
-}
-.btn-secondary {
-  background: transparent;
-  color: var(--accent);
-  border: 2px solid var(--accent);
-}
-.btn-secondary:hover {
-  background: var(--accent);
-  color: var(--primary);
-}
-/* Quick Start Section */
-.quick-start {
-  background: var(--surface);
-  border-radius: 20px;
-  padding: 40px;
-  margin: 60px 0;
-  border: 2px solid var(--surface-light);
-  animation: fadeIn 1s ease-out 1.2s backwards;
-}
-.quick-start h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 2rem;
-  margin-bottom: 30px;
-  text-align: center;
-  color: var(--text);
-}
-.quick-start-options {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-.quick-option {
-  background: var(--surface-light);
-  padding: 20px;
-  border-radius: 12px;
-  border-left: 4px solid var(--accent);
-}
-.quick-option h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.1rem;
-  margin-bottom: 10px;
-  color: var(--accent);
-}
-.quick-option p {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  line-height: 1.6;
-}
-/* Footer */
-footer {
-  text-align: center;
-  padding: 60px 20px 40px;
-  border-top: 1px solid var(--surface-light);
-  margin-top: 80px;
-  animation: fadeIn 1s ease-out 1.5s backwards;
-}
-.disclaimer {
-  max-width: 800px;
-  margin: 0 auto 30px;
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  line-height: 1.8;
-  padding: 20px;
-  background: rgba(168, 85, 247, 0.05);
-  border-radius: 12px;
-  border: 1px solid rgba(168, 85, 247, 0.2);
-}
-.disclaimer strong {
-  color: var(--accent-purple);
-}
-.copyright {
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  letter-spacing: 1px;
-}
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(10, 14, 39, 0.95);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-}
-.modal.active {
-  display: flex;
-}
-.modal-content {
-  background: var(--surface);
-  border-radius: 20px;
-  padding: 40px;
-  max-width: 700px;
-  width: 100%;
-  border: 2px solid var(--accent);
-  box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
-  animation: modalSlideIn 0.4s ease-out;
-}
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-.modal-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.8rem;
-  color: var(--text);
-}
-.modal-close {
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 2rem;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-  transition: color 0.3s ease;
-}
-.modal-close:hover {
-  color: var(--accent);
-}
-.modal-body {
-  color: var(--text);
-  line-height: 1.8;
-  font-size: 0.95rem;
-}
-.modal-body h3 {
-  font-family: 'Syne', sans-serif;
-  color: var(--accent);
-  margin: 20px 0 10px;
-}
-.modal-body ul {
-  margin-left: 20px;
-  color: var(--text-dim);
-}
-/* Responsive */
-@media (max-width: 768px) {
-  .logo {
-    font-size: 2.5rem;
-  }
-  .tagline {
-    font-size: 0.9rem;
-  }
-  .stats-bar {
-    gap: 20px;
-  }
-  .stat-number {
-    font-size: 1.8rem;
-  }
-  .paths {
-    grid-template-columns: 1fr;
-  }
-  .resource-grid {
-    grid-template-columns: 1fr;
-  }
-  .quick-start {
-    padding: 25px;
-  }
-  .modal-content {
-    padding: 25px;
-  }
-}
-/* Loading Animation */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid var(--surface-light);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C-Corp Education Hub | Interactive Learning Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0a0e27;
+            --accent: #00ff88;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-orange: #fb923c;
+            --text: #e2e8f0;
+            --text-dim: #94a3b8;
+            --surface: #1a1f3a;
+            --surface-light: #252b4a;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--primary);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-purple);
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 7s;
+        }
+
+        .orb3 {
+            width: 350px;
+            height: 350px;
+            background: var(--accent-blue);
+            top: 40%;
+            right: 10%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -2px;
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.3)); }
+            50% { filter: drop-shadow(0 0 40px rgba(0, 255, 136, 0.6)); }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .hero-description {
+            max-width: 700px;
+            margin: 30px auto;
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 40px 0 60px;
+            flex-wrap: wrap;
+            animation: fadeIn 1s ease-out 0.3s backwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Path Selector */
+        .path-selector {
+            margin: 60px 0;
+            animation: fadeIn 1s ease-out 0.6s backwards;
+        }
+
+        .path-selector h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--text);
+        }
+
+        .paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .path-card {
+            background: var(--surface);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .path-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(0, 255, 136, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .path-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .path-card:hover::before {
+            opacity: 1;
+        }
+
+        .path-card.active {
+            border-color: var(--accent);
+            background: var(--surface-light);
+        }
+
+        .path-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .path-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .path-desc {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+        }
+
+        .path-time {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Resources Grid */
+        .resources {
+            animation: fadeIn 1s ease-out 0.9s backwards;
+        }
+
+        .resources h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--text);
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .resource-card {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--surface-light);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.25);
+        }
+
+        .resource-header {
+            padding: 25px;
+            background: linear-gradient(135deg, var(--surface-light), var(--surface));
+            position: relative;
+        }
+
+        .resource-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .resource-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .resource-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .resource-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        .resource-body {
+            padding: 25px;
+        }
+
+        .resource-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .resource-features li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .resource-features li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .resource-footer {
+            padding: 0 25px 25px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            flex: 1;
+            min-width: 120px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: #00cc6e;
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        /* Quick Start Section */
+        .quick-start {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            border: 2px solid var(--surface-light);
+            animation: fadeIn 1s ease-out 1.2s backwards;
+        }
+
+        .quick-start h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--text);
+        }
+
+        .quick-start-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .quick-option {
+            background: var(--surface-light);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .quick-option h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .quick-option p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px 40px;
+            border-top: 1px solid var(--surface-light);
+            margin-top: 80px;
+            animation: fadeIn 1s ease-out 1.5s backwards;
+        }
+
+        .disclaimer {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            line-height: 1.8;
+            padding: 20px;
+            background: rgba(168, 85, 247, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+
+        .disclaimer strong {
+            color: var(--accent-purple);
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            border: 2px solid var(--accent);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+            animation: modalSlideIn 0.4s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            color: var(--text);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: var(--accent);
+        }
+
+        .modal-body {
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .modal-body h3 {
+            font-family: 'Syne', sans-serif;
+            color: var(--accent);
+            margin: 20px 0 10px;
+        }
+
+        .modal-body ul {
+            margin-left: 20px;
+            color: var(--text-dim);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 0.9rem;
+            }
+
+            .stats-bar {
+                gap: 20px;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+
+            .paths {
+                grid-template-columns: 1fr;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-start {
+                padding: 25px;
+            }
+
+            .modal-content {
+                padding: 25px;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--surface-light);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+    </style>
 </head>
 <body>
-<div class="grid-bg"></div>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
-<div class="container">
-  <header>
-    <h1 class="logo">C-CORP EDU</h1>
-    <p class="tagline">Interactive Learning Platform</p>
-    <p class="hero-description">
-      Master C-Corporation structure and automation from beginner to professional level.
-      Interactive games, advanced simulations, comprehensive documentation, and professional presentations - all in one complete educational package.
-    </p>
-  </header>
-  <div class="stats-bar">
-    <div class="stat">
-      <span class="stat-number">5</span>
-      <span class="stat-label">Resources</span>
+    <div class="grid-bg"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <div class="container">
+        <header>
+            <h1 class="logo">C-CORP EDU</h1>
+            <p class="tagline">Interactive Learning Platform</p>
+            <p class="hero-description">
+                Master C-Corporation structure and automation from beginner to professional level. 
+                Interactive games, advanced simulations, comprehensive documentation, and professional presentations - all in one complete educational package.
+            </p>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Resources</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Learning Paths</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">6-8</span>
+                <span class="stat-label">Hours to Master</span>
+            </div>
+        </div>
+
+        <div class="path-selector">
+            <h2>Choose Your Learning Path</h2>
+            <div class="paths">
+                <div class="path-card" onclick="selectPath('beginner')">
+                    <span class="path-icon">🎮</span>
+                    <h3 class="path-title">Beginner Path</h3>
+                    <p class="path-desc">Start with interactive gameplay and basic concepts</p>
+                    <span class="path-time">15-30 min</span>
+                </div>
+                <div class="path-card" onclick="selectPath('professional')">
+                    <span class="path-icon">💼</span>
+                    <h3 class="path-title">Professional Path</h3>
+                    <p class="path-desc">Deep dive into technical documentation and simulations</p>
+                    <span class="path-time">1-2 hours</span>
+                </div>
+                <div class="path-card" onclick="selectPath('implementation')">
+                    <span class="path-icon">🚀</span>
+                    <h3 class="path-title">Implementation Path</h3>
+                    <p class="path-desc">Business-ready implementation with real scenarios</p>
+                    <span class="path-time">20+ weeks</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="resources">
+            <h2>Educational Resources</h2>
+            <div class="resource-grid">
+                <!-- Interactive Game -->
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <span class="resource-type">Interactive</span>
+                        <span class="resource-icon">🎯</span>
+                        <h3 class="resource-title">Enhanced Game</h3>
+                        <p class="resource-subtitle">Kid-Friendly Interactive Learning</p>
+                    </div>
+                    <div class="resource-body">
+                        <ul class="resource-features">
+                            <li>7 Progressive Missions</li>
+                            <li>Turbo Pay Lane (Velocity Banking)</li>
+                            <li>Classroom Mode with Hints</li>
+                            <li>Automation Visualization</li>
+                            <li>Sandbox Experimentation</li>
+                        </ul>
+                    </div>
+                    <div class="resource-footer">
+                        <a href="enhanced_game.html" class="btn btn-primary" target="_blank">Launch Game</a>
+                        <button class="btn btn-secondary" onclick="showInfo('game')">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Advanced Simulation -->
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <span class="resource-type">Professional</span>
+                        <span class="resource-icon">⚙️</span>
+                        <h3 class="resource-title">Advanced Simulation</h3>
+                        <p class="resource-subtitle">B2B Transaction Simulator</p>
+                    </div>
+                    <div class="resource-body">
+                        <ul class="resource-features">
+                            <li>Multi-Industry Support</li>
+                            <li>Real-Time Flow Visualization</li>
+                            <li>Customizable Parameters</li>
+                            <li>API Integration Demo</li>
+                            <li>Performance Metrics</li>
+                        </ul>
+                    </div>
+                    <div class="resource-footer">
+                        <a href="advanced_professional_simulation.html" class="btn btn-primary" target="_blank">Run Simulation</a>
+                        <button class="btn btn-secondary" onclick="showInfo('simulation')">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Presentation -->
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <span class="resource-type">Training</span>
+                        <span class="resource-icon">📊</span>
+                        <h3 class="resource-title">Education Presentation</h3>
+                        <p class="resource-subtitle">Professional Training Slides</p>
+                    </div>
+                    <div class="resource-body">
+                        <ul class="resource-features">
+                            <li>8 Professional Slides</li>
+                            <li>Side-by-Side Comparison</li>
+                            <li>Learning Pathway Visual</li>
+                            <li>Implementation Guidance</li>
+                            <li>Ocean Gradient Theme</li>
+                        </ul>
+                    </div>
+                    <div class="resource-footer">
+                        <a href="CCorp_Education_Presentation.pptx" class="btn btn-primary" download>Download PPTX</a>
+                        <button class="btn btn-secondary" onclick="showInfo('presentation')">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Technical Documentation -->
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <span class="resource-type">Documentation</span>
+                        <span class="resource-icon">📚</span>
+                        <h3 class="resource-title">Technical Documentation</h3>
+                        <p class="resource-subtitle">Implementation Manual</p>
+                    </div>
+                    <div class="resource-body">
+                        <ul class="resource-features">
+                            <li>12-15 Page Manual</li>
+                            <li>Entity Structure Details</li>
+                            <li>Automation Architecture</li>
+                            <li>4-Phase Implementation</li>
+                            <li>Legal Disclaimers</li>
+                        </ul>
+                    </div>
+                    <div class="resource-footer">
+                        <a href="CCorp_Technical_Documentation.docx" class="btn btn-primary" download>Download DOCX</a>
+                        <button class="btn btn-secondary" onclick="showInfo('documentation')">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Education Plan -->
+                <div class="resource-card">
+                    <div class="resource-header">
+                        <span class="resource-type">Guide</span>
+                        <span class="resource-icon">🗺️</span>
+                        <h3 class="resource-title">Education Plan</h3>
+                        <p class="resource-subtitle">Master Learning Guide</p>
+                    </div>
+                    <div class="resource-body">
+                        <ul class="resource-features">
+                            <li>Complete Learning Pathway</li>
+                            <li>Implementation Guides</li>
+                            <li>Assessment Checkpoints</li>
+                            <li>Customization Instructions</li>
+                            <li>Success Metrics</li>
+                        </ul>
+                    </div>
+                    <div class="resource-footer">
+                        <a href="ccorp_education_plan.md" class="btn btn-primary" download>Download MD</a>
+                        <button class="btn btn-secondary" onclick="showInfo('plan')">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-start">
+            <h2>Quick Start Guide</h2>
+            <div class="quick-start-options">
+                <div class="quick-option">
+                    <h3>🎓 Complete Beginners</h3>
+                    <p>Launch the Enhanced Game, enable Classroom Mode, and complete all 7 missions. Then review the presentation for deeper understanding.</p>
+                </div>
+                <div class="quick-option">
+                    <h3>💼 Business Professionals</h3>
+                    <p>Start with Technical Documentation, then run the Advanced Simulation with your business numbers. Review presentation with your team.</p>
+                </div>
+                <div class="quick-option">
+                    <h3>👨‍🏫 Educators</h3>
+                    <p>Use the Education Presentation for teaching, then have students complete the interactive game. Reference the Education Plan for lesson structure.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="disclaimer">
+                <strong>⚠️ Legal Disclaimer:</strong> This package is for educational purposes only. It does not constitute legal, tax, financial, or business consulting advice. Always consult qualified professionals including corporate attorneys, CPAs, and financial advisors before making business structure decisions. Business structure decisions have significant legal, tax, and financial implications that vary by jurisdiction.
+            </div>
+            <p class="copyright">
+                C-Corp Education Hub v1.0 | January 2026 | Interactive Learning Platform
+            </p>
+        </footer>
     </div>
-    <div class="stat">
-      <span class="stat-number">3</span>
-      <span class="stat-label">Learning Paths</span>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Resource Information</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content populated by JavaScript -->
+            </div>
+        </div>
     </div>
-    <div class="stat">
-      <span class="stat-number">6-8</span>
-      <span class="stat-label">Hours to Master</span>
-    </div>
-  </div>
 
-  <div class="path-selector">
-    <h2>Choose Your Learning Path</h2>
-    <div class="paths">
-      <div class="path-card" onclick="selectPath('beginner', event)">
-        <span class="path-icon">🎮</span>
-        <h3 class="path-title">Beginner Path</h3>
-        <p class="path-desc">Start with interactive gameplay and basic concepts</p>
-        <span class="path-time">15-30 min</span>
-      </div>
-      <div class="path-card" onclick="selectPath('professional', event)">
-        <span class="path-icon">💼</span>
-        <h3 class="path-title">Professional Path</h3>
-        <p class="path-desc">Deep dive into technical documentation and simulations</p>
-        <span class="path-time">1-2 hours</span>
-      </div>
-      <div class="path-card" onclick="selectPath('implementation', event)">
-        <span class="path-icon">🚀</span>
-        <h3 class="path-title">Implementation Path</h3>
-        <p class="path-desc">Business-ready implementation with real scenarios</p>
-        <span class="path-time">20+ weeks</span>
-      </div>
-    </div>
-  </div>
+    <script>
+        const resourceInfo = {
+            game: {
+                title: "Enhanced Interactive Game",
+                content: `
+                    <h3>🎮 What You'll Learn</h3>
+                    <p>The Enhanced Game teaches C-Corporation structure through 7 progressive missions. Each mission introduces new concepts about how entities work together.</p>
+                    
+                    <h3>Features</h3>
+                    <ul>
+                        <li><strong>7 Progressive Missions:</strong> From simple payments to complex B2B deals</li>
+                        <li><strong>Turbo Pay Lane:</strong> Toggle velocity banking on/off to see the difference</li>
+                        <li><strong>Classroom Mode:</strong> Built-in hints and educational guidance</li>
+                        <li><strong>Automation Visualization:</strong> Watch money flow through entities in real-time</li>
+                        <li><strong>Sandbox Mode:</strong> Experiment with different income/expense scenarios</li>
+                        <li><strong>Gamification:</strong> Earn stars, build streaks, level up your mastery</li>
+                    </ul>
+                    
+                    <h3>How to Play</h3>
+                    <p>Click buildings to learn entity roles, complete missions by choosing the best options, earn stars for smart decisions (bonus with Turbo ON), and build streaks for consecutive correct answers.</p>
+                    
+                    <h3>Time Required</h3>
+                    <p>15-30 minutes to complete all missions</p>
+                `
+            },
+            simulation: {
+                title: "Advanced Professional Simulation",
+                content: `
+                    <h3>⚙️ What You'll Experience</h3>
+                    <p>The Advanced Simulation demonstrates real-world B2B transaction automation with customizable parameters and visual flow tracking.</p>
+                    
+                    <h3>Features</h3>
+                    <ul>
+                        <li><strong>Multi-Industry Support:</strong> SaaS, Retail, Real Estate, Manufacturing, Consulting</li>
+                        <li><strong>Flexible Transactions:</strong> $1K to $500K+, one-time to annual frequency</li>
+                        <li><strong>Complexity Levels:</strong> Simple (2-3 steps) to Complex (10+ steps)</li>
+                        <li><strong>Real-Time Visualization:</strong> Watch each automation step animate</li>
+                        <li><strong>API Integration Display:</strong> See CRM, Accounting, Payment systems activate</li>
+                        <li><strong>Performance Metrics:</strong> Track transaction count, volume, efficiency</li>
+                    </ul>
+                    
+                    <h3>How to Use</h3>
+                    <p>Select an entity to view details, configure simulation parameters, run the simulation to watch automated flow, and review allocation breakdown.</p>
+                    
+                    <h3>Time Required</h3>
+                    <p>20-30 minutes for comprehensive testing</p>
+                `
+            },
+            presentation: {
+                title: "Education Presentation",
+                content: `
+                    <h3>📊 What's Inside</h3>
+                    <p>Professional 8-slide presentation comparing beginner and advanced learning systems with visual aids and implementation guidance.</p>
+                    
+                    <h3>Slide Contents</h3>
+                    <ul>
+                        <li><strong>Slide 1:</strong> Title slide with professional branding</li>
+                        <li><strong>Slide 2:</strong> Package overview with all 4 deliverables</li>
+                        <li><strong>Slide 3:</strong> Beginner system features and target audience</li>
+                        <li><strong>Slide 4:</strong> Advanced system professional capabilities</li>
+                        <li><strong>Slide 5:</strong> Side-by-side comparison table</li>
+                        <li><strong>Slide 6:</strong> Learning pathway visualization</li>
+                        <li><strong>Slide 7:</strong> Implementation steps and guidance</li>
+                        <li><strong>Slide 8:</strong> Conclusion and next steps</li>
+                    </ul>
+                    
+                    <h3>Design Features</h3>
+                    <p>Ocean gradient color palette, clean modern layout, consistent visual hierarchy, and easy-to-read typography.</p>
+                    
+                    <h3>Compatible With</h3>
+                    <p>PowerPoint 2016+, Google Slides, LibreOffice Impress</p>
+                `
+            },
+            documentation: {
+                title: "Technical Documentation",
+                content: `
+                    <h3>📚 What's Covered</h3>
+                    <p>Comprehensive 12-15 page technical manual covering entity structure, automation architecture, and implementation roadmap.</p>
+                    
+                    <h3>Contents</h3>
+                    <ul>
+                        <li><strong>Executive Summary:</strong> Framework overview and components</li>
+                        <li><strong>Entity Structure:</strong> Detailed explanation of all 5 entities (Parent, Operating, Holding, Property, Non-Profit)</li>
+                        <li><strong>Automation Architecture:</strong> CRM, Accounting, Payment, Contract, Compliance, AI systems</li>
+                        <li><strong>Transaction Flow:</strong> Step-by-step $10K B2B scenario walkthrough</li>
+                        <li><strong>Implementation Guide:</strong> 4-phase roadmap with 20-week timeline</li>
+                        <li><strong>Legal Disclaimers:</strong> Compliance guidance and professional requirements</li>
+                    </ul>
+                    
+                    <h3>Use Cases</h3>
+                    <p>Business owners planning implementation, consultants designing systems, architects understanding integration requirements.</p>
+                    
+                    <h3>Compatible With</h3>
+                    <p>Microsoft Word 2016+, Google Docs, LibreOffice Writer</p>
+                `
+            },
+            plan: {
+                title: "Education Plan",
+                content: `
+                    <h3>🗺️ What's Included</h3>
+                    <p>Complete learning pathway with implementation guides for educators, business owners, and students.</p>
+                    
+                    <h3>Contents</h3>
+                    <ul>
+                        <li><strong>Learning Pathway:</strong> Progressive journey from beginner to advanced</li>
+                        <li><strong>Implementation Guides:</strong> For educators, business owners, and self-learners</li>
+                        <li><strong>Assessment Checkpoints:</strong> Validate learning at each stage</li>
+                        <li><strong>Success Metrics:</strong> Measure mastery and progress</li>
+                        <li><strong>Customization Instructions:</strong> Adapt to specific needs</li>
+                    </ul>
+                    
+                    <h3>Target Audiences</h3>
+                    <p>Parents and educators teaching students, business owners planning implementation, consultants designing systems, self-learners studying independently.</p>
+                    
+                    <h3>Format</h3>
+                    <p>Markdown file viewable in any text editor, GitHub, or Markdown viewer</p>
+                `
+            }
+        };
 
-  <div class="resources">
-    <h2>Educational Resources</h2>
-    <div class="resource-grid">
-      <div class="resource-card">
-        <div class="resource-header">
-          <span class="resource-type">Interactive</span>
-          <span class="resource-icon">🎯</span>
-          <h3 class="resource-title">Enhanced Game</h3>
-          <p class="resource-subtitle">Kid-Friendly Interactive Learning</p>
-        </div>
-        <div class="resource-body">
-          <ul class="resource-features">
-            <li>7 Progressive Missions</li>
-            <li>Turbo Pay Lane (Velocity Banking)</li>
-            <li>Classroom Mode with Hints</li>
-            <li>Automation Visualization</li>
-            <li>Sandbox Experimentation</li>
-          </ul>
-        </div>
-        <div class="resource-footer">
-          <button class="btn btn-primary" onclick="openResource('game')">Launch Game</button>
-          <button class="btn btn-secondary" onclick="showInfo('game')">Learn More</button>
-        </div>
-      </div>
+        function selectPath(path) {
+            // Remove active class from all cards
+            document.querySelectorAll('.path-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Add active class to clicked card
+            event.currentTarget.classList.add('active');
+            
+            // Scroll to resources
+            document.querySelector('.resources').scrollIntoView({ behavior: 'smooth' });
+        }
 
-      <div class="resource-card">
-        <div class="resource-header">
-          <span class="resource-type">Professional</span>
-          <span class="resource-icon">⚙️</span>
-          <h3 class="resource-title">Advanced Simulation</h3>
-          <p class="resource-subtitle">B2B Transaction Simulator</p>
-        </div>
-        <div class="resource-body">
-          <ul class="resource-features">
-            <li>Multi-Industry Support</li>
-            <li>Real-Time Flow Visualization</li>
-            <li>Customizable Parameters</li>
-            <li>API Integration Demo</li>
-            <li>Performance Metrics</li>
-          </ul>
-        </div>
-        <div class="resource-footer">
-          <button class="btn btn-primary" onclick="openResource('simulation')">Run Simulation</button>
-          <button class="btn btn-secondary" onclick="showInfo('simulation')">Learn More</button>
-        </div>
-      </div>
+        function showInfo(resource) {
+            const modal = document.getElementById('infoModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            const info = resourceInfo[resource];
+            title.textContent = info.title;
+            body.innerHTML = info.content;
+            
+            modal.classList.add('active');
+        }
 
-      <div class="resource-card">
-        <div class="resource-header">
-          <span class="resource-type">Training</span>
-          <span class="resource-icon">📊</span>
-          <h3 class="resource-title">Education Presentation</h3>
-          <p class="resource-subtitle">Professional Training Slides</p>
-        </div>
-        <div class="resource-body">
-          <ul class="resource-features">
-            <li>8 Professional Slides</li>
-            <li>Side-by-Side Comparison</li>
-            <li>Learning Pathway Visual</li>
-            <li>Implementation Guidance</li>
-            <li>Ocean Gradient Theme</li>
-          </ul>
-        </div>
-        <div class="resource-footer">
-          <button class="btn btn-primary" onclick="downloadResource('presentation')">Download PPTX</button>
-          <button class="btn btn-secondary" onclick="showInfo('presentation')">Learn More</button>
-        </div>
-      </div>
+        function closeModal() {
+            document.getElementById('infoModal').classList.remove('active');
+        }
 
-      <div class="resource-card">
-        <div class="resource-header">
-          <span class="resource-type">Documentation</span>
-          <span class="resource-icon">📚</span>
-          <h3 class="resource-title">Technical Documentation</h3>
-          <p class="resource-subtitle">Implementation Manual</p>
-        </div>
-        <div class="resource-body">
-          <ul class="resource-features">
-            <li>12-15 Page Manual</li>
-            <li>Entity Structure Details</li>
-            <li>Automation Architecture</li>
-            <li>4-Phase Implementation</li>
-            <li>Legal Disclaimers</li>
-          </ul>
-        </div>
-        <div class="resource-footer">
-          <button class="btn btn-primary" onclick="downloadResource('documentation')">Download DOCX</button>
-          <button class="btn btn-secondary" onclick="showInfo('documentation')">Learn More</button>
-        </div>
-      </div>
+        // Close modal when clicking outside
+        document.getElementById('infoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
 
-      <div class="resource-card">
-        <div class="resource-header">
-          <span class="resource-type">Guide</span>
-          <span class="resource-icon">🗺️</span>
-          <h3 class="resource-title">Education Plan</h3>
-          <p class="resource-subtitle">Master Learning Guide</p>
-        </div>
-        <div class="resource-body">
-          <ul class="resource-features">
-            <li>Complete Learning Pathway</li>
-            <li>Implementation Guides</li>
-            <li>Assessment Checkpoints</li>
-            <li>Customization Instructions</li>
-            <li>Success Metrics</li>
-          </ul>
-        </div>
-        <div class="resource-footer">
-          <button class="btn btn-primary" onclick="downloadResource('plan')">Download MD</button>
-          <button class="btn btn-secondary" onclick="showInfo('plan')">Learn More</button>
-        </div>
-      </div>
-    </div>
-  </div>
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
 
-  <div class="quick-start">
-    <h2>Quick Start Guide</h2>
-    <div class="quick-start-options">
-      <div class="quick-option">
-        <h3>🎓 Complete Beginners</h3>
-        <p>Launch the Enhanced Game, enable Classroom Mode, and complete all 7 missions. Then review the presentation for deeper understanding.</p>
-      </div>
-      <div class="quick-option">
-        <h3>💼 Business Professionals</h3>
-        <p>Start with Technical Documentation, then run the Advanced Simulation with your business numbers. Review presentation with your team.</p>
-      </div>
-      <div class="quick-option">
-        <h3>👨‍🏫 Educators</h3>
-        <p>Use the Education Presentation for teaching, then have students complete the interactive game. Reference the Education Plan for lesson structure.</p>
-      </div>
-    </div>
-  </div>
+        // Add entrance animations to cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-  <footer>
-    <div class="disclaimer">
-      <strong>⚠️ Legal Disclaimer:</strong> This package is for educational purposes only. It does not constitute legal, tax, financial, or business consulting advice. Always consult qualified professionals including corporate attorneys, CPAs, and financial advisors before making business structure decisions. Business structure decisions have significant legal, tax, and financial implications that vary by jurisdiction.
-    </div>
-    <p class="copyright">
-      C-Corp Education Hub v1.0 | January 2026 | Interactive Learning Platform
-    </p>
-  </footer>
-</div>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.animation = 'fadeIn 0.6s ease-out forwards';
+                    }, index * 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
 
-<div id="infoModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 class="modal-title" id="modalTitle">Resource Information</h2>
-      <button class="modal-close" onclick="closeModal()">&times;</button>
-    </div>
-    <div class="modal-body" id="modalBody">
-      </div>
-  </div>
-</div>
-
-<script>
-const resourceInfo = {
-  game: {
-    title: "Enhanced Interactive Game",
-    content: `
-<h3>🎮 What You'll Learn</h3>
-<p>The Enhanced Game teaches C-Corporation structure through 7 progressive missions. Each mission introduces new concepts about how entities work together.</p>
-<h3>Features</h3>
-<ul>
-<li><strong>7 Progressive Missions:</strong> From simple payments to complex B2B deals</li>
-<li><strong>Turbo Pay Lane:</strong> Toggle velocity banking on/off to see the difference</li>
-<li><strong>Classroom Mode:</strong> Built-in hints and educational guidance</li>
-<li><strong>Automation Visualization:</strong> Watch money flow through entities in real-time</li>
-<li><strong>Sandbox Mode:</strong> Experiment with different income/expense scenarios</li>
-<li><strong>Gamification:</strong> Earn stars, build streaks, level up your mastery</li>
-</ul>
-<h3>How to Play</h3>
-<p>Click buildings to learn entity roles, complete missions by choosing the best options, earn stars for smart decisions (bonus with Turbo ON), and build streaks for consecutive correct answers.</p>
-<h3>Time Required</h3>
-<p>15-30 minutes to complete all missions</p>
-`
-  },
-  simulation: {
-    title: "Advanced Professional Simulation",
-    content: `
-<h3>⚙️ What You'll Experience</h3>
-<p>The Advanced Simulation demonstrates real-world B2B transaction automation with customizable parameters and visual flow tracking.</p>
-<h3>Features</h3>
-<ul>
-<li><strong>Multi-Industry Support:</strong> SaaS, Retail, Real Estate, Manufacturing, Consulting</li>
-<li><strong>Flexible Transactions:</strong> $1K to $500K+, one-time to annual frequency</li>
-<li><strong>Complexity Levels:</strong> Simple (2-3 steps) to Complex (10+ steps)</li>
-<li><strong>Real-Time Visualization:</strong> Watch each automation step animate</li>
-<li><strong>API Integration Display:</strong> See CRM, Accounting, Payment systems activate</li>
-<li><strong>Performance Metrics:</strong> Track transaction count, volume, efficiency</li>
-</ul>
-<h3>How to Use</h3>
-<p>Select an entity to view details, configure simulation parameters, run the simulation to watch automated flow, and review allocation breakdown.</p>
-<h3>Time Required</h3>
-<p>20-30 minutes for comprehensive testing</p>
-`
-  },
-  presentation: {
-    title: "Education Presentation",
-    content: `
-<h3>📊 What's Inside</h3>
-<p>Professional 8-slide presentation comparing beginner and advanced learning systems with visual aids and implementation guidance.</p>
-<h3>Slide Contents</h3>
-<ul>
-<li><strong>Slide 1:</strong> Title slide with professional branding</li>
-<li><strong>Slide 2:</strong> Package overview with all 4 deliverables</li>
-<li><strong>Slide 3:</strong> Beginner system features and target audience</li>
-<li><strong>Slide 4:</strong> Advanced system professional capabilities</li>
-<li><strong>Slide 5:</strong> Side-by-side comparison table</li>
-<li><strong>Slide 6:</strong> Learning pathway visualization</li>
-<li><strong>Slide 7:</strong> Implementation steps and guidance</li>
-<li><strong>Slide 8:</strong> Conclusion and next steps</li>
-</ul>
-<h3>Design Features</h3>
-<p>Ocean gradient color palette, clean modern layout, consistent visual hierarchy, and easy-to-read typography.</p>
-<h3>Compatible With</h3>
-<p>PowerPoint 2016+, Google Slides, LibreOffice Impress</p>
-`
-  },
-  documentation: {
-    title: "Technical Documentation",
-    content: `
-<h3>📚 What's Covered</h3>
-<p>Comprehensive 12-15 page technical manual covering entity structure, automation architecture, and implementation roadmap.</p>
-<h3>Contents</h3>
-<ul>
-<li><strong>Executive Summary:</strong> Framework overview and components</li>
-<li><strong>Entity Structure:</strong> Detailed explanation of all 5 entities (Parent, Operating, Holding, Property, Non-Profit)</li>
-<li><strong>Automation Architecture:</strong> CRM, Accounting, Payment, Contract, Compliance, AI systems</li>
-<li><strong>Transaction Flow:</strong> Step-by-step $10K B2B scenario walkthrough</li>
-<li><strong>Implementation Guide:</strong> 4-phase roadmap with 20-week timeline</li>
-<li><strong>Legal Disclaimers:</strong> Compliance guidance and professional requirements</li>
-</ul>
-<h3>Use Cases</h3>
-<p>Business owners planning implementation, consultants designing systems, architects understanding integration requirements.</p>
-<h3>Compatible With</h3>
-<p>Microsoft Word 2016+, Google Docs, LibreOffice Writer</p>
-`
-  },
-  plan: {
-    title: "Education Plan",
-    content: `
-<h3>🗺️ What's Included</h3>
-<p>Complete learning pathway with implementation guides for educators, business owners, and students.</p>
-<h3>Contents</h3>
-<ul>
-<li><strong>Learning Pathway:</strong> Progressive journey from beginner to advanced</li>
-<li><strong>Implementation Guides:</strong> For educators, business owners, and self-learners</li>
-<li><strong>Assessment Checkpoints:</strong> Validate learning at each stage</li>
-<li><strong>Success Metrics:</strong> Measure mastery and progress</li>
-<li><strong>Customization Instructions:</strong> Adapt to specific needs</li>
-</ul>
-<h3>Target Audiences</h3>
-<p>Parents and educators teaching students, business owners planning implementation, consultants designing systems, self-learners studying independently.</p>
-<h3>Format</h3>
-<p>Markdown file viewable in any text editor, GitHub, or Markdown viewer</p>
-`
-  }
-};
-
-// Selection logic
-function selectPath(path, evt) {
-  document.querySelectorAll('.path-card').forEach(card => {
-    card.classList.remove('active');
-  });
-  if (evt && evt.currentTarget) {
-    evt.currentTarget.classList.add('active');
-  }
-  document.querySelector('.resources').scrollIntoView({ behavior: 'smooth' });
-}
-
-function showInfo(resource) {
-  const modal = document.getElementById('infoModal');
-  const title = document.getElementById('modalTitle');
-  const body = document.getElementById('modalBody');
-  const info = resourceInfo[resource];
-  title.textContent = info.title;
-  body.innerHTML = info.content;
-  modal.classList.add('active');
-}
-
-function closeModal() {
-  document.getElementById('infoModal').classList.remove('active');
-}
-
-// Updated Links for 2026
-const externalResources = {
-  game: "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_6ef96808-761c-4a67-8596-fd2816f33306/666c5d9e-1718-4f81-9b16-56be337a77d1/enhanced_game.html",
-  simulation: "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_6ef96808-761c-4a67-8596-fd2816f33306/1359a67a-f860-496e-bc3e-10b271f2536b/advanced_professional_simulation.html",
-  documentation: "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_6ef96808-761c-4a67-8596-fd2816f33306/799d23da-8642-4deb-b829-5950f48bff9a/CCorp_Technical_Documentation.docx",
-  presentation: "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_6ef96808-761c-4a67-8596-fd2816f33306/e3677dd7-68fb-45c1-ac94-cb3a7bc498b9/CCorp_Education_Presentation.pptx",
-  plan: "https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_6ef96808-761c-4a67-8596-fd2816f33306/3b2a1b83-c7e0-4742-99c8-26fe47a6919e/ccorp_education_plan.md"
-};
-
-function openResource(type) {
-  if (type === 'game') {
-    window.open(externalResources.game, '_blank', 'noopener');
-  } else if (type === 'simulation') {
-    window.open(externalResources.simulation, '_blank', 'noopener');
-  }
-}
-
-function downloadResource(type) {
-  if (type === 'presentation') {
-    window.open(externalResources.presentation, '_blank', 'noopener');
-  } else if (type === 'documentation') {
-    window.open(externalResources.documentation, '_blank', 'noopener');
-  } else if (type === 'plan') {
-    window.open(externalResources.plan, '_blank', 'noopener');
-  }
-}
-
-// Global UI listeners
-document.getElementById('infoModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeModal();
-});
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, index) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }, index * 100);
-    }
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.resource-card').forEach(card => {
-  card.style.opacity = '0';
-  card.style.transform = 'translateY(20px)';
-  card.style.transition = 'all 0.6s ease-out';
-  observer.observe(card);
-});
-</script>
+        document.querySelectorAll('.resource-card').forEach(card => {
+            card.style.opacity = '0';
+            observer.observe(card);
+        });
+    </script>
 </body>
 </html>
